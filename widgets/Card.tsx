@@ -1,5 +1,5 @@
 import React from "react"
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 
 type dataType = {
     title: String,
@@ -11,17 +11,19 @@ type dataType = {
 const Card = ({ title, imgUrl, btnText, btnClick }: dataType) => {
     return (
         <View style={CardStyle.container}>
-            <Image
+            <ImageBackground
                 style={CardStyle.Img}
-                resizeMode="contain"
                 source={{
                     uri: imgUrl
                 }}
+                resizeMode="cover"
             />
+
             <Text style={CardStyle.text}>{title}</Text>
             <TouchableOpacity onPress={btnClick} style={CardStyle.Btn}>
                 <Text style={CardStyle.BtnText}>{btnText}</Text>
             </TouchableOpacity>
+
         </View>
     )
 }
@@ -30,29 +32,39 @@ export default Card
 
 const CardStyle = StyleSheet.create({
     container: {
-        padding: 2,
-        alignItems: "center",
-        width: 170,
-        marginRight: 13
+        flex: 1,
+        height: 220,
+        width: 307,
+        marginHorizontal: 15,
+        backgroundColor: "white",
+        borderRadius: 35,
+        overflow: "hidden",
+        marginBottom: 30,
     },
     Img: {
-        width: 175,
-        height: 125,
+        flex: 1,
+        justifyContent: "center",
+    },
+    desc: {
+        alignItems: "center",
+        marginTop: 15
     },
     text: {
-        marginTop: -10,
-        fontWeight: "600",
-        fontSize: 20
+        color: "white",
+        fontSize: 22,
+        lineHeight: 24,
+        fontWeight: "bold",
+        textAlign: "center",
+        backgroundColor: "#000000a2",
     },
-    Btn:{
-        marginTop: 7,
+    Btn: {
         backgroundColor: "#2cff02",
         alignItems: "center",
-        justifyContent:"center",
+        justifyContent: "center",
         padding: 5,
         borderRadius: 7,
     },
-    BtnText:{
+    BtnText: {
         fontWeight: "600",
         color: "#FFF",
         fontSize: 20

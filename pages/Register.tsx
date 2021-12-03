@@ -17,7 +17,6 @@ export default function Register() {
     const [password2, setPassword2] = useState("")
 
     const checkLogged = async () => {
-        console.log(isUserLogged())
         if (await isUserLogged()) {
             navigator.navigate(home)
         }

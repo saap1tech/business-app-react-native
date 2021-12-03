@@ -33,6 +33,8 @@ export default function Login() {
             checkLogged()
         })
             .catch(err => console.log(err))
+
+            navigator.navigate(home)
     }
 
     useEffect(() => {

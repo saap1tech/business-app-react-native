@@ -1,16 +1,33 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { Icon } from 'react-native-elements'
-import { loggoutUser } from '../auth'
 import Card from '../widgets/Card'
 import { useNavigation } from "@react-navigation/native"
+import Header from '../widgets/Header'
+import { useStateValue } from '../StateProvider'
 
 export default function Home() {
 
     const navigator = useNavigation()
 
     const [search, setSearch] = useState("")
+
+    const [{ basket }, dispatch] = useStateValue()
+
+    const addToBasket = (id:number,title: String, price: number, imgUrl: String, type: String) => {
+        // dispatch the item into the data layer
+        dispatch({
+            type: "ADD_TO_BASKET",
+            item: {
+                id:id,
+                title: title,
+                price: price,
+                imgUrl: imgUrl,
+                type: type
+            },
+        });
+    };
 
     const [filmsDT, setFilmsDT] = useState<Array<any>>()
     const [servicesDT, setServicesDT] = useState<Array<any>>()
@@ -19,12 +36,6 @@ export default function Home() {
     const [films, setFilms] = useState<Array<any>>()
     const [services, setServices] = useState<Array<any>>()
     const [products, setProducts] = useState<Array<any>>()
-
-    const logout = () => {
-        const login: any = "Login"
-        loggoutUser()
-        navigator.navigate(login)
-    }
 
     useEffect(() => {
         axios.get('http://localhost:8000/main/films/')
@@ -48,16 +59,8 @@ export default function Home() {
 
     return (
         <View style={HomeStyle.container}>
-            <TouchableOpacity
-                style={{ display: 'flex', alignItems: 'center' }}
-                onPress={logout}>
-                <Text>Logout</Text>
-                <Icon
-                    tvParallaxProperties
-                    name="logout"
-                    onPress={() => { }}
-                />
-            </TouchableOpacity>
+            <StatusBar barStyle="light-content" />
+            <Header />
             <View style={HomeStyle.SearchContainer}>
                 <TextInput
                     onChangeText={value => setSearch(value)}
@@ -92,6 +95,7 @@ export default function Home() {
                                 imgUrl={`http://localhost:8000${film["image"]}`}
                                 btnText="watch"
                                 btnClick={() => navigator.navigate("Watch", {
+                                    title: film['title'],
                                     videoUrl: `http://localhost:8000${film["video"]}`
                                 })}
                             />
@@ -110,7 +114,15 @@ export default function Home() {
                                 title={service['title']}
                                 imgUrl={`http://localhost:8000${service["image"]}`}
                                 btnText={`Buy ${service["price"]}$`}
-                                btnClick={() => { }}
+                                btnClick={
+                                    () => addToBasket(
+                                        service["id"],
+                                        service["title"],
+                                        service["price"],
+                                        `http://localhost:8000${service["image"]}`,
+                                        "service"
+                                    )
+                                }
                             />
                         ))}
                     </ScrollView>
@@ -127,7 +139,15 @@ export default function Home() {
                                 title={product['title']}
                                 imgUrl={`http://localhost:8000${product["image"]}`}
                                 btnText={`Buy ${product["price"]}$`}
-                                btnClick={() => { }}
+                                btnClick={
+                                    () => addToBasket(
+                                        product["id"],
+                                        product['title'],
+                                        product["price"],
+                                        `http://localhost:8000${product["image"]}`,
+                                        "product"
+                                    )
+                                }
                             />
                         ))}
                     </ScrollView>
@@ -142,14 +162,14 @@ const HomeStyle = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "white",
-        paddingTop: 50,
-        paddingHorizontal: 12,
+        paddingTop: 0
     },
     SearchContainer: {
         flexDirection: "row",
         width: "100%",
         justifyContent: "center",
-        marginTop: 50,
+        marginTop: 14,
+        marginBottom: 7,
         borderRadius: 7,
         borderWidth: 0.2
     },
