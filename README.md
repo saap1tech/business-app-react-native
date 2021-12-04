@@ -16,6 +16,6 @@
 
 - Install dependencies: `npm install` or `yarn`
 
-- Start the metro: `npm start` or `yarn start`
+- Start the metro: `npm start` or `yarn start` or `expo start`
 
 - Start the app on emulator type `a` for android or `i` for ios
