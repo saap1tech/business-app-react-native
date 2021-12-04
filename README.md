@@ -16,6 +16,8 @@
 
 - Install dependencies: `npm install` or `yarn`
 
+- Run the python server: [Link of the server in Github](https://github.com/saap1tech/business-app-server/)
+
 - Start the metro: `npm start` or `yarn start` or `expo start`
 
 - Start the app on emulator type `a` for android or `i` for ios
