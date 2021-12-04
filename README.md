@@ -1,4 +1,4 @@
-## [Business App UI (react-native)]
+## Business App UI (react-native)
 
 #### Developed using the following
 - React Native
